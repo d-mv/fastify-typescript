@@ -2,13 +2,13 @@ import { FastifyInstance } from 'fastify';
 
 export default function apiRouter(
   server: FastifyInstance,
-  opts: Record<string, unknown>, // ?
-  next: (err?: Error | undefined) => void
+  _opts: Record<string, unknown>, // ?
+  next: (err?: Error | undefined) => void,
 ) {
-  server.get('/ping', async (request, reply) => {
-    return 'pong\n';
+  server.get('/ping', async (_request, _reply) => {
+    return 'pong';
   });
-  server.get('/error', async (request, reply) => {
+  server.get('/error', async (_request, _reply) => {
     throw new Error('Sample Error');
   });
   next();

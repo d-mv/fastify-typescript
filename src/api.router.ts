@@ -7,8 +7,8 @@ import { User, UserSchema } from './types';
 
 export default function apiRouter(
   server: FastifyInstance,
-  opts: Record<string, unknown>, // ?
-  next: (err?: Error | undefined) => void
+  _opts: Record<string, unknown>, // ?
+  next: (err?: Error | undefined) => void,
 ) {
   server.post<{ Body: User }>(
     '/auth',
@@ -34,6 +34,7 @@ export default function apiRouter(
       },
       onResponse: (request, _reply, done) => {
         const measure = performance.measure(request.id, `${request.id}-start`);
+
         log('>>> onResponse, request performance:');
         dir(measure);
         done();
@@ -49,12 +50,11 @@ export default function apiRouter(
     },
     (request, reply) => {
       log('>>> handler');
+
       const { firstName, lastName } = request.body;
 
-      reply
-        .status(200)
-        .send({ requestId: request.id, name: `${lastName}, ${firstName}` });
-    }
+      reply.status(200).send({ requestId: request.id, name: `${lastName}, ${firstName}` });
+    },
   );
   next();
 }
